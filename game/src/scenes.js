@@ -293,6 +293,29 @@ function drawLiving(ctx, v, W, H) {
   if (v === 'A') line(ctx, 355, 60, 355, 40, 3, '#2b2620');
   else line(ctx, 355, 60, 355, 80, 3, '#2b2620');
 
+  // Richness (static, identical in both panels): a floating shelf with
+  // vases under the photo frame, a small framed picture under the window,
+  // and a woven basket on the floor by the lamp.
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(200, 240, 130, 6);
+  ctx.fillStyle = '#3d6fb4';
+  rr(ctx, 214, 214, 18, 26, 4);
+  ctx.fillStyle = '#e07a5f';
+  rr(ctx, 250, 210, 16, 30, 4);
+  ctx.fillStyle = '#81b29a';
+  rr(ctx, 284, 216, 18, 24, 4);
+  ctx.fillStyle = '#6d4c2f';
+  ctx.fillRect(390, 200, 70, 56);
+  ctx.fillStyle = '#f2cc8f';
+  ctx.fillRect(396, 206, 58, 44);
+  ctx.fillStyle = '#e05d4d';
+  circle(ctx, 425, 228, 10);
+  ctx.fillStyle = '#c89b6a';
+  rr(ctx, 480, 512, 50, 32, 8);
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(480, 524, 50, 4);
+  ctx.fillRect(480, 534, 50, 4);
+
   // Sofa with three cushions. B: the blue cushion moved to the right end.
   ctx.fillStyle = '#b5654a';
   rr(ctx, 40, 330, 300, 110, 16);
@@ -923,6 +946,22 @@ function drawDining(ctx, v, W, H) {
     circle(ctx, 290, 56, 40);
   }
 
+  // Richness (static, identical in both panels): two wall shelves, one
+  // with cups above the table, one with jars by the wall picture.
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(200, 200, 180, 6);
+  ctx.fillStyle = '#e07a5f';
+  rr(ctx, 224, 182, 16, 18, 3);
+  ctx.fillStyle = '#3d6fb4';
+  rr(ctx, 282, 178, 16, 22, 3);
+  ctx.fillStyle = '#81b29a';
+  rr(ctx, 340, 182, 16, 18, 3);
+  ctx.fillRect(460, 220, 100, 6);
+  ctx.fillStyle = '#e07a5f';
+  rr(ctx, 474, 202, 16, 18, 3);
+  ctx.fillStyle = '#3d6fb4';
+  rr(ctx, 524, 198, 16, 22, 3);
+
   // Sideboard, left, with a bowl only in B (added).
   ctx.fillStyle = '#8a5a2e';
   ctx.fillRect(40, 400, 100, 70);
@@ -1036,6 +1075,29 @@ function drawStudy(ctx, v, W, H) {
   ctx.fillStyle = '#ffffff';
   circle(ctx, 80, 90, 11);
   circle(ctx, 94, 90, 14);
+
+  // Richness (static, identical in both panels): a shelf with jars under
+  // the window, a framed certificate on the wall by the bookshelf, and a
+  // book stack on the floor right of the rug.
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(45, 200, 70, 6);
+  ctx.fillStyle = '#3d6fb4';
+  rr(ctx, 54, 182, 14, 18, 3);
+  ctx.fillStyle = '#e07a5f';
+  rr(ctx, 82, 178, 14, 22, 3);
+  ctx.fillStyle = '#6d4c2f';
+  ctx.fillRect(470, 332, 70, 36);
+  ctx.fillStyle = '#f7ead2';
+  ctx.fillRect(476, 338, 58, 24);
+  ctx.fillStyle = '#3d6fb4';
+  ctx.fillRect(486, 344, 38, 3);
+  ctx.fillRect(486, 350, 28, 3);
+  ctx.fillStyle = '#2a9d8f';
+  rr(ctx, 460, 532, 60, 10, 3);
+  ctx.fillStyle = '#e05d4d';
+  rr(ctx, 464, 522, 52, 10, 3);
+  ctx.fillStyle = '#3d6fb4';
+  rr(ctx, 468, 512, 44, 10, 3);
 
   // Wall poster. A: 120 x 80. B: 90 x 60 (resized).
   ctx.fillStyle = '#6d4c2f';
