@@ -6,7 +6,7 @@ export const GAME = {
   sub: 'Cari bedanya di rumah nenek',
   width: 1280,
   height: 800,
-  scenesTotal: 7,
+  scenesTotal: 8,
   diffsPerScene: 8,
   timePerScene: 100, // seconds on the clock when a scene starts
   hintsPerScene: 3,
@@ -36,12 +36,12 @@ export function fmtTime(sec) {
   return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
 }
 
-// Keyboard: H hint, R restart the scene, P pause, 1–7 jump to a scene.
-export const KEYS = { hint: 'h', restart: 'r', pause: 'p', scenes: ['1', '2', '3', '4', '5', '6', '7'] };
+// Keyboard: H hint, R restart the scene, P pause, 1–8 jump to a scene.
+export const KEYS = { hint: 'h', restart: 'r', pause: 'p', scenes: ['1', '2', '3', '4', '5', '6', '7', '8'] };
 
 // One line of help, shown in the footer of every screen.
 export const HELP_TEXT =
-  'Klik bedanya di gambar mana pun. H = petunjuk, R = ulang, P = jeda, 1–7 = pindah scene.';
+  'Klik bedanya di gambar mana pun. H = petunjuk, R = ulang, P = jeda, 1–8 = pindah scene.';
 
 // Flat, warm palette. The whole game is drawn from these colours — no
 // image files, no network, so the dossier stays small and deterministic.
