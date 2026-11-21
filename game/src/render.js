@@ -16,13 +16,14 @@ export const HEADER_BUTTONS = {
 // Footer buttons: jump to a scene, or restart the current one. Same row,
 // same height, so they read as one control strip.
 export const FOOTER_BUTTONS = [
-  { label: '1 Dapur', scene: 0, x: 794, y: 764, w: 60, h: 26 },
-  { label: '2 Tamu', scene: 1, x: 860, y: 764, w: 60, h: 26 },
-  { label: '3 Kebun', scene: 2, x: 926, y: 764, w: 60, h: 26 },
-  { label: '4 Senja', scene: 3, x: 992, y: 764, w: 60, h: 26 },
-  { label: '5 Tidur', scene: 4, x: 1058, y: 764, w: 60, h: 26 },
-  { label: '6 Makan', scene: 5, x: 1124, y: 764, w: 60, h: 26 },
-  { label: 'R Ulang', restart: true, x: 1190, y: 764, w: 60, h: 26 },
+  { label: '1 Dapur', scene: 0, x: 744, y: 764, w: 58, h: 26 },
+  { label: '2 Tamu', scene: 1, x: 808, y: 764, w: 58, h: 26 },
+  { label: '3 Kebun', scene: 2, x: 872, y: 764, w: 58, h: 26 },
+  { label: '4 Senja', scene: 3, x: 936, y: 764, w: 58, h: 26 },
+  { label: '5 Tidur', scene: 4, x: 1000, y: 764, w: 58, h: 26 },
+  { label: '6 Makan', scene: 5, x: 1064, y: 764, w: 58, h: 26 },
+  { label: '7 Belajar', scene: 6, x: 1128, y: 764, w: 58, h: 26 },
+  { label: 'R Ulang', restart: true, x: 1192, y: 764, w: 58, h: 26 },
 ];
 
 function text(ctx, s, x, y, size, color, weight, align) {
@@ -189,7 +190,7 @@ function drawFooter(ctx, world) {
     ctx.strokeStyle = COLORS.panelEdge;
     ctx.lineWidth = 1;
     ctx.stroke();
-    text(ctx, b.label, b.x + b.w / 2, b.y + b.h / 2 + 1, 12, active ? COLORS.ink : COLORS.cream, '700', 'center');
+    text(ctx, b.label, b.x + b.w / 2, b.y + b.h / 2 + 1, 11, active ? COLORS.ink : COLORS.cream, '700', 'center');
   }
 }
 
@@ -213,7 +214,7 @@ export function draw(ctx, world) {
   if (world.phase === 'title') {
     overlay(ctx, GAME.title, [
       GAME.sub,
-      '6 scene · 8 perbedaan di tiap scene · 100 detik per scene',
+      '7 scene · 8 perbedaan di tiap scene · 100 detik per scene',
       'Temukan semuanya sebelum waktu habis. Hint (H) 3x per scene.',
     ]);
   } else if (world.phase === 'paused') {
@@ -230,7 +231,7 @@ export function draw(ctx, world) {
     ], COLORS.red);
   } else if (world.phase === 'win') {
     overlay(ctx, 'Semua scene selesai!', [
-      'Kamu menemukan ' + world.totalFound + ' perbedaan di 6 scene rumah nenek.',
+      'Kamu menemukan ' + world.totalFound + ' perbedaan di 7 scene rumah nenek.',
       'Skor akhir: ' + world.score + '  ·  Streak terbaik: x' + world.bestStreak,
     ], COLORS.gold);
   }
