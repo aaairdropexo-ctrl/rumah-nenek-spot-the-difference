@@ -373,6 +373,22 @@ function drawLiving(ctx, v, W, H) {
   ctx.fillStyle = '#8a5a2e';
   ctx.fillRect(480, 524, 50, 4);
   ctx.fillRect(480, 534, 50, 4);
+  // Density (static, identical in both panels): a floor cushion, a book
+  // stack by the lamp, and a wall shelf with a vase.
+  ctx.fillStyle = '#e07a5f';
+  rr(ctx, 8, 515, 45, 28, 10);
+  ctx.fillStyle = '#c0392b';
+  ctx.fillRect(8, 526, 45, 4);
+  ctx.fillStyle = '#2a9d8f';
+  rr(ctx, 542, 530, 33, 8, 3);
+  ctx.fillStyle = '#e05d4d';
+  rr(ctx, 544, 522, 29, 8, 3);
+  ctx.fillStyle = '#3d6fb4';
+  rr(ctx, 546, 514, 25, 8, 3);
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(470, 260, 65, 6);
+  ctx.fillStyle = '#81b29a';
+  rr(ctx, 480, 240, 16, 20, 4);
 
   // Sofa with three cushions. B: the blue cushion moved to the right end.
   ctx.fillStyle = '#b5654a';
@@ -1026,6 +1042,29 @@ function drawDining(ctx, v, W, H) {
   rr(ctx, 474, 202, 16, 18, 3);
   ctx.fillStyle = '#3d6fb4';
   rr(ctx, 524, 198, 16, 22, 3);
+  // Density (static, identical in both panels): curtains on the window,
+  // a floor plant, and a woven wall hanging.
+  ctx.fillStyle = '#6d4c2f';
+  ctx.fillRect(36, 22, 148, 6);
+  ctx.fillStyle = '#c0392b';
+  ctx.fillRect(40, 28, 20, 130);
+  ctx.fillRect(164, 28, 16, 130);
+  ctx.fillStyle = '#b5654a';
+  rr(ctx, 545, 520, 25, 25, 6);
+  ctx.fillStyle = '#3fae6a';
+  ctx.beginPath();
+  ctx.ellipse(557, 502, 9, 18, 0.3, 0, Math.PI * 2);
+  ctx.ellipse(550, 506, 7, 14, -0.3, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#f2cc8f';
+  ctx.fillRect(250, 230, 80, 55);
+  ctx.strokeStyle = '#8a5a2e';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(250, 230, 80, 55);
+  ctx.fillStyle = '#e05d4d';
+  ctx.fillRect(262, 285, 6, 12);
+  ctx.fillRect(286, 285, 6, 12);
+  ctx.fillRect(310, 285, 6, 12);
 
   // Sideboard, left, with a bowl only in B (added).
   ctx.fillStyle = '#8a5a2e';
@@ -1174,6 +1213,27 @@ function drawStudy(ctx, v, W, H) {
   rr(ctx, 464, 522, 52, 10, 3);
   ctx.fillStyle = '#3d6fb4';
   rr(ctx, 468, 512, 44, 10, 3);
+  // Density (static, identical in both panels): a desk plant, a floor
+  // cushion, and a second wall shelf with books.
+  ctx.fillStyle = '#b5654a';
+  rr(ctx, 214, 364, 22, 16, 4);
+  ctx.fillStyle = '#3fae6a';
+  ctx.beginPath();
+  ctx.ellipse(225, 352, 8, 16, 0.3, 0, Math.PI * 2);
+  ctx.ellipse(218, 356, 6, 12, -0.3, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#e07a5f';
+  rr(ctx, 30, 510, 60, 30, 12);
+  ctx.fillStyle = '#c0392b';
+  ctx.fillRect(30, 522, 60, 4);
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(45, 250, 70, 6);
+  ctx.fillStyle = '#3d6fb4';
+  rr(ctx, 58, 230, 14, 20, 3);
+  ctx.fillStyle = '#e07a5f';
+  rr(ctx, 76, 228, 14, 22, 3);
+  ctx.fillStyle = '#81b29a';
+  rr(ctx, 94, 232, 14, 18, 3);
 
   // Wall poster. A: 120 x 80. B: 90 x 60 (resized).
   ctx.fillStyle = '#6d4c2f';
