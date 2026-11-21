@@ -16,11 +16,13 @@ export const HEADER_BUTTONS = {
 // Footer buttons: jump to a scene, or restart the current one. Same row,
 // same height, so they read as one control strip.
 export const FOOTER_BUTTONS = [
-  { label: '1 Dapur', scene: 0, x: 900, y: 764, w: 64, h: 26 },
-  { label: '2 Tamu', scene: 1, x: 972, y: 764, w: 64, h: 26 },
-  { label: '3 Kebun', scene: 2, x: 1044, y: 764, w: 64, h: 26 },
-  { label: '4 Senja', scene: 3, x: 1116, y: 764, w: 64, h: 26 },
-  { label: 'R Ulang', restart: true, x: 1188, y: 764, w: 64, h: 26 },
+  { label: '1 Dapur', scene: 0, x: 794, y: 764, w: 60, h: 26 },
+  { label: '2 Tamu', scene: 1, x: 860, y: 764, w: 60, h: 26 },
+  { label: '3 Kebun', scene: 2, x: 926, y: 764, w: 60, h: 26 },
+  { label: '4 Senja', scene: 3, x: 992, y: 764, w: 60, h: 26 },
+  { label: '5 Tidur', scene: 4, x: 1058, y: 764, w: 60, h: 26 },
+  { label: '6 Makan', scene: 5, x: 1124, y: 764, w: 60, h: 26 },
+  { label: 'R Ulang', restart: true, x: 1190, y: 764, w: 60, h: 26 },
 ];
 
 function text(ctx, s, x, y, size, color, weight, align) {
@@ -211,7 +213,7 @@ export function draw(ctx, world) {
   if (world.phase === 'title') {
     overlay(ctx, GAME.title, [
       GAME.sub,
-      '4 scene · 8 perbedaan di tiap scene · 100 detik per scene',
+      '6 scene · 8 perbedaan di tiap scene · 100 detik per scene',
       'Temukan semuanya sebelum waktu habis. Hint (H) 3x per scene.',
     ]);
   } else if (world.phase === 'paused') {
@@ -228,7 +230,7 @@ export function draw(ctx, world) {
     ], COLORS.red);
   } else if (world.phase === 'win') {
     overlay(ctx, 'Semua scene selesai!', [
-      'Kamu menemukan ' + world.totalFound + ' perbedaan di 4 scene rumah nenek.',
+      'Kamu menemukan ' + world.totalFound + ' perbedaan di 6 scene rumah nenek.',
       'Skor akhir: ' + world.score + '  ·  Streak terbaik: x' + world.bestStreak,
     ], COLORS.gold);
   }
