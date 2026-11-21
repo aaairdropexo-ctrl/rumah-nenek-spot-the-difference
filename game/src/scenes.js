@@ -1382,6 +1382,172 @@ const STUDY_DIFFS = [
   { id: 'kucing-belajar', name: 'Kucing muncul di karpet', type: 'added', x: 205, y: 518, r: 22 },
 ];
 
+// --- Scene 8: Kamar Mandi (Bathroom) ---------------------------------------
+// The depth edge: 64 differences in total beats #3's 50 by even more.
+// The subtlest scene — the differences hide among lookalikes.
+function drawBathroom(ctx, v, W, H) {
+  // Wall + tiled floor.
+  wallGrad(ctx, W, H, '#dbe9f0', '#c8dce8');
+  ctx.fillStyle = '#e8e4da';
+  ctx.fillRect(0, 470, W, H - 470);
+  ctx.strokeStyle = '#c9c2b2';
+  ctx.lineWidth = 2;
+  for (let x = 0; x < W; x += 72) {
+    ctx.beginPath();
+    ctx.moveTo(x, 470);
+    ctx.lineTo(x, H);
+    ctx.stroke();
+  }
+  ctx.beginPath();
+  ctx.moveTo(0, 513);
+  ctx.lineTo(W, 513);
+  ctx.stroke();
+
+  // Frosted window (static).
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(40, 28, 140, 110);
+  ctx.fillStyle = '#bfe3f2';
+  ctx.fillRect(50, 38, 120, 90);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(50, 78, 120, 6);
+  ctx.fillRect(104, 38, 6, 90);
+
+  // Mirror. A: 120 x 90. B: 90 x 70 (resized).
+  ctx.fillStyle = '#6d4c2f';
+  if (v === 'A') ctx.fillRect(220, 40, 120, 90);
+  else ctx.fillRect(235, 50, 90, 70);
+  ctx.fillStyle = '#bfe3f2';
+  if (v === 'A') ctx.fillRect(228, 48, 104, 74);
+  else ctx.fillRect(243, 58, 74, 54);
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+  ctx.beginPath();
+  if (v === 'A') {
+    ctx.moveTo(240, 122);
+    ctx.lineTo(280, 48);
+    ctx.lineTo(296, 48);
+    ctx.lineTo(256, 122);
+  } else {
+    ctx.moveTo(252, 112);
+    ctx.lineTo(282, 58);
+    ctx.lineTo(294, 58);
+    ctx.lineTo(264, 112);
+  }
+  ctx.closePath();
+  ctx.fill();
+
+  // Towel rack with two towels. B: the left towel is green, not blue (recoloured).
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(440, 120, 100, 8);
+  ctx.fillStyle = v === 'A' ? '#3d6fb4' : '#81b29a';
+  ctx.fillRect(450, 128, 30, 60);
+  ctx.fillStyle = '#e05d4d';
+  ctx.fillRect(500, 128, 30, 60);
+
+  // Shelf with three bottles. B: the third one is gone (removed).
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(440, 200, 100, 8);
+  const bottles = [
+    { x: 455, c: '#e07a5f' },
+    { x: 480, c: '#3d6fb4' },
+    { x: 505, c: '#81b29a' },
+  ];
+  for (let i = 0; i < bottles.length; i++) {
+    if (v === 'B' && i === 2) continue;
+    ctx.fillStyle = bottles[i].c;
+    rr(ctx, bottles[i].x, 178, 14, 22, 4);
+  }
+
+  // Shower head on a wall pipe. A: the nozzle points left. B: right (flipped).
+  ctx.fillStyle = '#2f2f38';
+  ctx.fillRect(57, 140, 6, 60);
+  circle(ctx, 60, 202, 9);
+  ctx.strokeStyle = '#2f2f38';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  if (v === 'A') {
+    ctx.moveTo(56, 206);
+    ctx.lineTo(46, 216);
+  } else {
+    ctx.moveTo(64, 206);
+    ctx.lineTo(74, 216);
+  }
+  ctx.stroke();
+
+  // Bathtub with a rubber duck. B: the duck is gone (removed).
+  ctx.fillStyle = '#f7ead2';
+  rr(ctx, 40, 380, 220, 90, 12);
+  ctx.fillStyle = '#bfe3f2';
+  rr(ctx, 52, 390, 196, 60, 10);
+  if (v === 'A') {
+    ctx.fillStyle = '#ffd94d';
+    circle(ctx, 120, 408, 12);
+    circle(ctx, 128, 396, 8);
+    ctx.fillStyle = '#e07a5f';
+    ctx.beginPath();
+    ctx.moveTo(136, 394);
+    ctx.lineTo(144, 397);
+    ctx.lineTo(136, 400);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // Vanity with sink and faucet. Toothbrush: A left of the basin,
+  // B right of it (moved). Soap dish on the tub rim, only in B (added).
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(270, 300, 180, 12);
+  ctx.fillRect(280, 312, 160, 108);
+  ctx.fillStyle = '#6d4c2f';
+  ctx.fillRect(300, 330, 120, 60);
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.ellipse(360, 300, 45, 10, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#2f2f38';
+  ctx.fillRect(357, 270, 6, 30);
+  ctx.strokeStyle = '#2f2f38';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(360, 270);
+  ctx.quadraticCurveTo(378, 270, 378, 282);
+  ctx.stroke();
+  const brushX = v === 'A' ? 288 : 425;
+  ctx.fillStyle = '#3d6fb4';
+  ctx.fillRect(brushX, 298, 20, 4);
+  ctx.fillStyle = '#81b29a';
+  ctx.fillRect(brushX + 20, 296, 6, 8);
+  if (v === 'B') {
+    ctx.fillStyle = '#ffffff';
+    rr(ctx, 225, 372, 24, 8, 3);
+    ctx.fillStyle = '#f4a259';
+    rr(ctx, 229, 368, 12, 6, 3);
+  }
+
+  // Toilet (static).
+  ctx.fillStyle = '#ffffff';
+  rr(ctx, 460, 380, 70, 50, 6);
+  rr(ctx, 455, 430, 80, 20, 8);
+  rr(ctx, 460, 450, 70, 40, 10);
+  ctx.fillStyle = '#3d6fb4';
+  ctx.fillRect(488, 388, 14, 8);
+
+  // Bath mat. A: red stripe. B: blue stripe (recoloured).
+  ctx.fillStyle = '#f2cc8f';
+  rr(ctx, 220, 480, 160, 40, 10);
+  ctx.fillStyle = v === 'A' ? '#e05d4d' : '#3d6fb4';
+  ctx.fillRect(220, 494, 160, 10);
+}
+
+const BATHROOM_DIFFS = [
+  { id: 'bebek', name: 'Bebek karet hilang', type: 'removed', x: 120, y: 400, r: 20 },
+  { id: 'keset', name: 'Warna garis keset berubah', type: 'recoloured', x: 300, y: 500, r: 30 },
+  { id: 'sikat', name: 'Sikat gigi pindah sisi', type: 'moved', x: 425, y: 300, r: 16, ax: 288, ay: 300 },
+  { id: 'cermin', name: 'Cermin mengecil', type: 'resized', x: 280, y: 85, r: 28 },
+  { id: 'pancuran', name: 'Pancuran berbalik arah', type: 'flipped', x: 60, y: 205, r: 20, ax: 70, ay: 210 },
+  { id: 'sabun', name: 'Tempat sabun muncul', type: 'added', x: 237, y: 376, r: 14 },
+  { id: 'botol', name: 'Satu botol hilang', type: 'removed', x: 512, y: 190, r: 16 },
+  { id: 'handuk', name: 'Warna handuk berubah', type: 'recoloured', x: 465, y: 160, r: 20 },
+];
+
 // --- The set ----------------------------------------------------------------
 export const SCENES = [
   { id: 1, name: 'Dapur', sub: 'Dapur nenek yang hangat', draw: drawKitchen, diffs: KITCHEN_DIFFS },
@@ -1391,4 +1557,5 @@ export const SCENES = [
   { id: 5, name: 'Kamar Tidur', sub: 'Malam di kamar tidur', draw: drawBedroom, diffs: BEDROOM_DIFFS },
   { id: 6, name: 'Ruang Makan', sub: 'Makan malam keluarga', draw: drawDining, diffs: DINING_DIFFS },
   { id: 7, name: 'Ruang Belajar', sub: 'Belajar sampai larut', draw: drawStudy, diffs: STUDY_DIFFS },
+  { id: 8, name: 'Kamar Mandi', sub: 'Mandi pagi yang segar', draw: drawBathroom, diffs: BATHROOM_DIFFS },
 ];
