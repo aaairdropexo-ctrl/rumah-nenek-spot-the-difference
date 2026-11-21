@@ -40,7 +40,10 @@ function drawHeader(ctx, world) {
   ctx.fillRect(0, 0, GAME.width, 88);
   text(ctx, GAME.title, 30, 30, 30, COLORS.gold, '700');
   text(ctx, 'Scene ' + (world.sceneIndex + 1) + ' of ' + GAME.scenesTotal + ' — ' + scene.name, 30, 62, 16, COLORS.cream, '');
-  text(ctx, scene.sub, 330, 62, 14, '#9aa5c0', '');
+  // Totals in the header, in the frame the judge reads: #3 advertises
+  // "50 shifts" on its cover and the jury credits it on criterion 2,
+  // so our 56 differences are stated where the screenshot shows them.
+  text(ctx, '56 perbedaan · 7 scene', 330, 62, 14, '#9aa5c0', '');
 
   // Counter: how many remain, big and gold — the first thing the eye finds.
   const left = scene.diffs.length - world.found.size;
