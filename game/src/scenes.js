@@ -1013,6 +1013,168 @@ const DINING_DIFFS = [
   { id: 'mangkuk', name: 'Mangkuk muncul', type: 'added', x: 90, y: 402, r: 18 },
 ];
 
+// --- Scene 7: Ruang Belajar (Study Room) --------------------------------------
+// The hardest scene and the depth edge: 56 differences in total beats
+// #3's 50. Everything hides among lookalikes — three pencils, four books,
+// a clock whose hands move by half an hour.
+function drawStudy(ctx, v, W, H) {
+  // Wall + floor.
+  ctx.fillStyle = '#e9e4f5';
+  ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = '#c89b6a';
+  ctx.fillRect(0, 470, W, H - 470);
+  ctx.fillStyle = '#b3854f';
+  for (let x = 0; x < W; x += 90) ctx.fillRect(x, 470, 3, H - 470);
+
+  // Window with daylight (static).
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(40, 28, 140, 130);
+  ctx.fillStyle = '#bfe3f2';
+  ctx.fillRect(50, 38, 120, 110);
+  ctx.fillStyle = '#ffd94d';
+  circle(ctx, 140, 70, 20);
+  ctx.fillStyle = '#ffffff';
+  circle(ctx, 80, 90, 11);
+  circle(ctx, 94, 90, 14);
+
+  // Wall poster. A: 120 x 80. B: 90 x 60 (resized).
+  ctx.fillStyle = '#6d4c2f';
+  if (v === 'A') ctx.fillRect(216, 36, 128, 88);
+  else ctx.fillRect(231, 46, 98, 68);
+  ctx.fillStyle = '#81b29a';
+  if (v === 'A') ctx.fillRect(222, 42, 116, 76);
+  else ctx.fillRect(237, 52, 86, 56);
+  ctx.fillStyle = '#e07a5f';
+  circle(ctx, 280, 80, 16);
+
+  // Wall clock. A: 4:00. B: 4:30 (moved).
+  ctx.fillStyle = '#fff8e6';
+  circle(ctx, 400, 70, 24);
+  ctx.strokeStyle = '#2b2620';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(400, 70, 24, 0, Math.PI * 2);
+  ctx.stroke();
+  line(ctx, 400, 70, 400, 50, 3, '#2b2620');
+  if (v === 'A') line(ctx, 400, 70, 418, 70, 3, '#2b2620');
+  else line(ctx, 400, 70, 400, 90, 3, '#2b2620');
+
+  // Bookshelf with three rows. B: the first spine on the top row is
+  // green, not red (recoloured).
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(440, 60, 120, 260);
+  ctx.fillStyle = '#f7ead2';
+  ctx.fillRect(448, 68, 104, 244);
+  const rows = [80, 160, 240];
+  const spineCols = ['#e05d4d', '#3d6fb4', '#f2cc8f', '#81b29a', '#e07a5f'];
+  for (let r = 0; r < 3; r++) {
+    for (let i = 0; i < 5; i++) {
+      ctx.fillStyle = r === 0 && i === 0 && v === 'B' ? '#3fae6a' : spineCols[(i + r) % 5];
+      ctx.fillRect(452 + i * 20, rows[r], 16, 52);
+    }
+    ctx.fillStyle = '#8a5a2e';
+    ctx.fillRect(448, rows[r] + 56, 104, 8);
+  }
+
+  // Desk with a drawer.
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(120, 380, 340, 14);
+  ctx.fillRect(140, 394, 14, 76);
+  ctx.fillRect(426, 394, 14, 76);
+  ctx.fillStyle = '#6d4c2f';
+  ctx.fillRect(150, 400, 90, 60);
+  ctx.fillStyle = '#ffd94d';
+  circle(ctx, 195, 430, 5);
+
+  // Desk lamp. Shade: A yellow, B blue (recoloured).
+  ctx.fillStyle = '#2f2f38';
+  ctx.fillRect(166, 340, 8, 40);
+  ctx.fillStyle = '#2f2f38';
+  circle(ctx, 170, 382, 16);
+  ctx.fillStyle = v === 'A' ? '#ffd94d' : '#3d6fb4';
+  ctx.beginPath();
+  ctx.moveTo(152, 340);
+  ctx.lineTo(188, 340);
+  ctx.lineTo(180, 312);
+  ctx.lineTo(160, 312);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = 'rgba(255, 217, 77, 0.3)';
+  if (v === 'A') circle(ctx, 170, 330, 22);
+
+  // Globe on the desk. A: present. B: gone (removed).
+  if (v === 'A') {
+    ctx.fillStyle = '#6d4c2f';
+    ctx.fillRect(392, 372, 16, 8);
+    ctx.fillStyle = '#3d6fb4';
+    circle(ctx, 400, 350, 20);
+    ctx.fillStyle = '#81b29a';
+    ctx.beginPath();
+    ctx.ellipse(394, 342, 8, 12, 0.4, 0, Math.PI * 2);
+    ctx.ellipse(404, 360, 7, 10, -0.4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Pencil cup. A: on the desk. B: on top of the bookshelf (moved).
+  const cup = v === 'A' ? { x: 280, y: 360 } : { x: 500, y: 45 };
+  ctx.fillStyle = '#e07a5f';
+  rr(ctx, cup.x - 12, cup.y - 10, 24, 22, 4);
+  ctx.strokeStyle = '#ffd94d';
+  ctx.lineWidth = 3;
+  line(ctx, cup.x - 6, cup.y - 10, cup.x - 8, cup.y - 24, 3, '#ffd94d');
+  line(ctx, cup.x + 2, cup.y - 10, cup.x + 2, cup.y - 26, 3, '#3d6fb4');
+  line(ctx, cup.x + 8, cup.y - 10, cup.x + 10, cup.y - 22, 3, '#81b29a');
+
+  // Papers and a book stack on the desk (static).
+  ctx.fillStyle = '#ffffff';
+  rr(ctx, 300, 368, 60, 12, 2);
+  ctx.fillStyle = '#f7ead2';
+  rr(ctx, 304, 372, 52, 10, 2);
+  ctx.fillStyle = '#2a9d8f';
+  rr(ctx, 330, 356, 40, 12, 3);
+  ctx.fillStyle = '#e05d4d';
+  rr(ctx, 332, 346, 36, 10, 3);
+
+  // Chair in front of the desk. The back: A on the left, B on the
+  // right (flipped) — the chair is turned away from the desk in B.
+  ctx.fillStyle = '#6d4c2f';
+  const backX = v === 'A' ? 250 : 320;
+  ctx.fillRect(backX, 428, 10, 44);
+  ctx.fillRect(250, 470, 80, 10);
+  ctx.fillRect(258, 480, 8, 50);
+  ctx.fillRect(314, 480, 8, 50);
+
+  // Rug + sleeping cat, only in B (added).
+  ctx.fillStyle = '#f2cc8f';
+  rr(ctx, 150, 500, 270, 40, 10);
+  ctx.fillStyle = '#3d6fb4';
+  ctx.fillRect(150, 512, 270, 12);
+  if (v === 'B') {
+    ctx.fillStyle = '#e07a5f';
+    ctx.beginPath();
+    ctx.ellipse(200, 520, 30, 13, 0, 0, Math.PI * 2);
+    ctx.fill();
+    circle(ctx, 224, 514, 10);
+    ctx.beginPath();
+    ctx.moveTo(228, 508);
+    ctx.lineTo(231, 500);
+    ctx.lineTo(234, 508);
+    ctx.closePath();
+    ctx.fill();
+  }
+}
+
+const STUDY_DIFFS = [
+  { id: 'buku-rak', name: 'Warna punggung buku berubah', type: 'recoloured', x: 460, y: 106, r: 16 },
+  { id: 'jam-belajar', name: 'Jarum jam pindah', type: 'moved', x: 400, y: 70, r: 26 },
+  { id: 'globe', name: 'Globe hilang', type: 'removed', x: 400, y: 350, r: 22 },
+  { id: 'pensil', name: 'Tempat pensil pindah', type: 'moved', x: 500, y: 45, r: 18, ax: 280, ay: 360 },
+  { id: 'lampu-belajar', name: 'Warna kap lampu berubah', type: 'recoloured', x: 170, y: 326, r: 22 },
+  { id: 'poster', name: 'Poster mengecil', type: 'resized', x: 280, y: 80, r: 30 },
+  { id: 'kursi-belajar', name: 'Kursi berbalik', type: 'flipped', x: 325, y: 450, r: 24, ax: 255, ay: 450 },
+  { id: 'kucing-belajar', name: 'Kucing muncul di karpet', type: 'added', x: 205, y: 518, r: 22 },
+];
+
 // --- The set ----------------------------------------------------------------
 export const SCENES = [
   { id: 1, name: 'Dapur', sub: 'Dapur nenek yang hangat', draw: drawKitchen, diffs: KITCHEN_DIFFS },
@@ -1021,4 +1183,5 @@ export const SCENES = [
   { id: 4, name: 'Beranda Senja', sub: 'Senja di beranda', draw: drawPorch, diffs: PORCH_DIFFS },
   { id: 5, name: 'Kamar Tidur', sub: 'Malam di kamar tidur', draw: drawBedroom, diffs: BEDROOM_DIFFS },
   { id: 6, name: 'Ruang Makan', sub: 'Makan malam keluarga', draw: drawDining, diffs: DINING_DIFFS },
+  { id: 7, name: 'Ruang Belajar', sub: 'Belajar sampai larut', draw: drawStudy, diffs: STUDY_DIFFS },
 ];
