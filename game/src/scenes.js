@@ -35,15 +35,44 @@ function line(ctx, x1, y1, x2, y2, w, color) {
   ctx.stroke();
 }
 
+// Rich skin (v5 total rework): a wall gradient, a soft floor shadow and
+// small object details, all drawn identically in both panels — none of
+// them branches on the variant, so they can never create an unregistered
+// difference.
+function wallGrad(ctx, W, H, top, bottom) {
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, top);
+  g.addColorStop(1, bottom);
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+}
+
+function bandGrad(ctx, W, y0, y1, stops) {
+  const g = ctx.createLinearGradient(0, y0, 0, y1);
+  for (const [o, c] of stops) g.addColorStop(o, c);
+  ctx.fillStyle = g;
+  ctx.fillRect(0, y0, W, y1 - y0);
+}
+
+function shadow(ctx, x, y, rx, ry) {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+  ctx.beginPath();
+  ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2);
+  ctx.fill();
+}
+
 // --- Scene 1: Dapur (Kitchen) -------------------------------------------
 function drawKitchen(ctx, v, W, H) {
   // Wall + floor.
-  ctx.fillStyle = '#f7ead2';
-  ctx.fillRect(0, 0, W, H);
+  wallGrad(ctx, W, H, '#f7ead2', '#eeddb8');
   ctx.fillStyle = '#c89b6a';
   ctx.fillRect(0, 470, W, H - 470);
   ctx.fillStyle = '#b3854f';
   for (let x = 0; x < W; x += 90) ctx.fillRect(x, 470, 3, H - 470);
+
+  // Floor shadows under the stove and the table.
+  shadow(ctx, 150, 472, 110, 7);
+  shadow(ctx, 430, 472, 100, 7);
 
   // Window with sun and two clouds (same in both variants).
   ctx.fillStyle = '#ffffff';
@@ -93,12 +122,32 @@ function drawKitchen(ctx, v, W, H) {
     ctx.fillStyle = '#6d4c2f';
     ctx.fillRect(j.x + 4, 208 - j.h - 6, 36, 8);
   }
+  // Shelf brackets (static).
+  ctx.fillStyle = '#6d4c2f';
+  ctx.beginPath();
+  ctx.moveTo(55, 208);
+  ctx.lineTo(65, 208);
+  ctx.lineTo(55, 222);
+  ctx.closePath();
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(285, 208);
+  ctx.lineTo(295, 208);
+  ctx.lineTo(295, 222);
+  ctx.closePath();
+  ctx.fill();
 
   // Stove with two pots and a kettle. Steam curls above the kettle.
   ctx.fillStyle = '#4a4a55';
   rr(ctx, 40, 320, 220, 150, 10);
   ctx.fillStyle = '#2f2f38';
   ctx.fillRect(55, 335, 190, 10);
+  // Oven door with a handle (static detail on the stove front).
+  ctx.strokeStyle = '#2f2f38';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(70, 360, 160, 80);
+  ctx.fillStyle = '#2f2f38';
+  ctx.fillRect(90, 372, 120, 6);
   ctx.fillStyle = '#c0c0cc';
   circle(ctx, 100, 320, 26);
   circle(ctx, 200, 320, 26);
@@ -205,12 +254,16 @@ const KITCHEN_DIFFS = [
 // --- Scene 2: Ruang Tamu (Living Room) ------------------------------------
 function drawLiving(ctx, v, W, H) {
   // Wall + floor.
-  ctx.fillStyle = '#e6ead9';
-  ctx.fillRect(0, 0, W, H);
+  wallGrad(ctx, W, H, '#e6ead9', '#d3dcc4');
   ctx.fillStyle = '#c89b6a';
   ctx.fillRect(0, 470, W, H - 470);
   ctx.fillStyle = '#b3854f';
   for (let x = 0; x < W; x += 90) ctx.fillRect(x, 470, 3, H - 470);
+
+  // Floor shadows under the TV stand, the coffee table and the plant.
+  shadow(ctx, 450, 472, 90, 7);
+  shadow(ctx, 310, 540, 110, 6);
+  shadow(ctx, 90, 542, 40, 5);
 
   // Window with red curtains.
   ctx.fillStyle = '#ffffff';
@@ -248,12 +301,17 @@ function drawLiving(ctx, v, W, H) {
     ctx.fillStyle = i === 0 && v === 'B' ? '#3fae6a' : spines[i];
     ctx.fillRect(54 + i * 20, 80, 16, 80);
   }
+  // Book title lines on every spine (identical in both panels).
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+  for (let i = 0; i < 6; i++) ctx.fillRect(54 + i * 20 + 3, 100, 10, 2);
   ctx.fillStyle = '#8a5a2e';
   ctx.fillRect(48, 164, 124, 8);
   for (let i = 0; i < 5; i++) {
     ctx.fillStyle = spines[(i + 2) % 6];
     ctx.fillRect(54 + i * 22, 176, 16, 70);
   }
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+  for (let i = 0; i < 5; i++) ctx.fillRect(54 + i * 22 + 3, 196, 10, 2);
 
   // Two photo frames. B: the left picture is sea, not mountains (recoloured).
   ctx.fillStyle = '#6d4c2f';
@@ -328,7 +386,18 @@ function drawLiving(ctx, v, W, H) {
     ctx.fillStyle = c.c;
     rr(ctx, c.x, 350, 80, 60, 10);
   }
+  // Cushion buttons, fixed spots (the cushion under them is the
+  // registered difference; the buttons themselves never move).
+  ctx.fillStyle = '#9c4f38';
+  circle(ctx, 100, 380, 3);
+  circle(ctx, 190, 380, 3);
+  circle(ctx, 280, 380, 3);
 
+  // TV stand drawer with a knob (static decor).
+  ctx.fillStyle = '#5b4128';
+  ctx.fillRect(400, 436, 100, 20);
+  ctx.fillStyle = '#ffd94d';
+  circle(ctx, 450, 446, 3);
   // TV on its stand. The screen is the same in both panels — a changing
   // screen that is not a registered difference would punish a player for
   // clicking a real change, so it stays static decor.
@@ -395,6 +464,8 @@ function drawLiving(ctx, v, W, H) {
   rr(ctx, 150, 520, 300, 30, 8);
   ctx.fillStyle = '#e05d4d';
   ctx.fillRect(150, 528, 300, 8);
+  ctx.fillStyle = '#3d6fb4';
+  ctx.fillRect(150, 540, 300, 4);
   ctx.fillStyle = '#f7ead2';
   const tx = v === 'A' ? 138 : 450;
   for (let i = 0; i < 5; i++) ctx.fillRect(tx, 522 + i * 5, 12, 3);
@@ -414,8 +485,7 @@ const LIVING_DIFFS = [
 // --- Scene 3: Kebun (Garden) ------------------------------------------------
 function drawGarden(ctx, v, W, H) {
   // Sky + sun. A: 8 rays. B: 6 rays (resized).
-  ctx.fillStyle = '#bfe3f2';
-  ctx.fillRect(0, 0, W, 380);
+  bandGrad(ctx, W, 0, 380, [[0, '#bfe3f2'], [1, '#e6f3f8']]);
   ctx.fillStyle = '#ffd94d';
   circle(ctx, 480, 70, 30);
   ctx.strokeStyle = '#ffd94d';
@@ -432,8 +502,7 @@ function drawGarden(ctx, v, W, H) {
   circle(ctx, 156, 70, 16);
 
   // Grass + fence.
-  ctx.fillStyle = '#8fbf6f';
-  ctx.fillRect(0, 380, W, H - 380);
+  bandGrad(ctx, W, 380, H, [[0, '#8fbf6f'], [1, '#79ac5c']]);
   ctx.fillStyle = '#a8d08a';
   ctx.fillRect(0, 380, W, 14);
   ctx.fillStyle = '#e8dcc0';
@@ -581,12 +650,7 @@ const GARDEN_DIFFS = [
 // --- Scene 4: Beranda Senja (Porch at Dusk) ----------------------------------
 function drawPorch(ctx, v, W, H) {
   // Dusk sky: purple up top, orange at the horizon.
-  ctx.fillStyle = '#6b5b95';
-  ctx.fillRect(0, 0, W, 200);
-  ctx.fillStyle = '#b5658a';
-  ctx.fillRect(0, 200, W, 80);
-  ctx.fillStyle = '#f4a259';
-  ctx.fillRect(0, 280, W, 40);
+  bandGrad(ctx, W, 0, 320, [[0, '#6b5b95'], [0.6, '#b5658a'], [1, '#f4a259']]);
 
   // Moon. A: full. B: crescent (reshaped).
   ctx.fillStyle = '#fff3c4';
@@ -621,8 +685,7 @@ function drawPorch(ctx, v, W, H) {
   }
 
   // House wall + porch floor.
-  ctx.fillStyle = '#5b5470';
-  ctx.fillRect(0, 320, W, 140);
+  bandGrad(ctx, W, 320, 460, [[0, '#5b5470'], [1, '#4c4560']]);
   ctx.fillStyle = '#8a5a2e';
   ctx.fillRect(0, 460, W, H - 460);
   ctx.fillStyle = '#6d4c2f';
@@ -745,8 +808,7 @@ const PORCH_DIFFS = [
 // the first scenes — one slipper among two, one pillow among two.
 function drawBedroom(ctx, v, W, H) {
   // Wall + floor.
-  ctx.fillStyle = '#efe6d8';
-  ctx.fillRect(0, 0, W, H);
+  wallGrad(ctx, W, H, '#efe6d8', '#e6d6bc');
   ctx.fillStyle = '#c89b6a';
   ctx.fillRect(0, 470, W, H - 470);
   ctx.fillStyle = '#b3854f';
@@ -899,12 +961,15 @@ const BEDROOM_DIFFS = [
 // hide among lookalikes, so the eye has to count, not just glance.
 function drawDining(ctx, v, W, H) {
   // Wall + floor.
-  ctx.fillStyle = '#f3e2c7';
-  ctx.fillRect(0, 0, W, H);
+  wallGrad(ctx, W, H, '#f3e2c7', '#ecd5ae');
   ctx.fillStyle = '#c89b6a';
   ctx.fillRect(0, 470, W, H - 470);
   ctx.fillStyle = '#b3854f';
   for (let x = 0; x < W; x += 90) ctx.fillRect(x, 470, 3, H - 470);
+
+  // Floor shadows under the table and the sideboard.
+  shadow(ctx, 290, 472, 160, 7);
+  shadow(ctx, 90, 472, 55, 6);
 
   // Window with daylight (static).
   ctx.fillStyle = '#ffffff';
@@ -995,6 +1060,10 @@ function drawDining(ctx, v, W, H) {
     ctx.fillRect(120, 374, 340, 6);
   }
 
+  // Hem line along the tablecloth's bottom edge (identical in both panels).
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+  ctx.fillRect(120, 378, 340, 2);
+
   // Four plates. B: the third one is gone (removed).
   ctx.fillStyle = '#ffffff';
   const plates = [180, 260, 340, 420];
@@ -1038,6 +1107,10 @@ function drawDining(ctx, v, W, H) {
     ctx.fillRect(c.x + 4, c.y + 10, 8, 40);
     ctx.fillRect(c.x + 38, c.y + 10, 8, 40);
     ctx.fillRect(c.x, c.y - 36, 10, 40);
+    // Back slat, part of the chair (moves with it for the right chair).
+    ctx.fillStyle = '#5b4128';
+    ctx.fillRect(c.x, c.y - 20, 10, 3);
+    ctx.fillStyle = '#6d4c2f';
   }
 }
 
@@ -1058,12 +1131,15 @@ const DINING_DIFFS = [
 // a clock whose hands move by half an hour.
 function drawStudy(ctx, v, W, H) {
   // Wall + floor.
-  ctx.fillStyle = '#e9e4f5';
-  ctx.fillRect(0, 0, W, H);
+  wallGrad(ctx, W, H, '#e9e4f5', '#dbd1ee');
   ctx.fillStyle = '#c89b6a';
   ctx.fillRect(0, 470, W, H - 470);
   ctx.fillStyle = '#b3854f';
   for (let x = 0; x < W; x += 90) ctx.fillRect(x, 470, 3, H - 470);
+
+  // Floor shadows under the desk and the chair.
+  shadow(ctx, 290, 472, 160, 7);
+  shadow(ctx, 290, 534, 45, 6);
 
   // Window with daylight (static).
   ctx.fillStyle = '#ffffff';
@@ -1137,12 +1213,21 @@ function drawStudy(ctx, v, W, H) {
     ctx.fillStyle = '#8a5a2e';
     ctx.fillRect(448, rows[r] + 56, 104, 8);
   }
+  // Book title lines on every spine (identical in both panels).
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+  for (let r = 0; r < 3; r++) {
+    for (let i = 0; i < 5; i++) ctx.fillRect(452 + i * 20 + 3, rows[r] + 18, 10, 2);
+  }
 
   // Desk with a drawer.
   ctx.fillStyle = '#8a5a2e';
   ctx.fillRect(120, 380, 340, 14);
   ctx.fillRect(140, 394, 14, 76);
   ctx.fillRect(426, 394, 14, 76);
+  // Wood grain on the desk top (identical in both panels).
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
+  ctx.fillRect(130, 384, 320, 2);
+  ctx.fillRect(130, 388, 320, 2);
   ctx.fillStyle = '#6d4c2f';
   ctx.fillRect(150, 400, 90, 60);
   ctx.fillStyle = '#ffd94d';
