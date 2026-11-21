@@ -65,6 +65,36 @@ export function applyShot(world, params) {
     return true;
   }
 
+  if (shot === 'scene5') {
+    startScene(world, 4);
+    const scene = currentScene(world);
+    for (const d of scene.diffs.slice(0, 2)) {
+      world.found.add(d.id);
+      world.foundNames.push(d.name);
+      world.totalFound += 1;
+    }
+    world.streak = 2;
+    world.bestStreak = 2;
+    world.score = 225;
+    world.timeLeft = 61;
+    return true;
+  }
+
+  if (shot === 'scene6') {
+    startScene(world, 5);
+    const scene = currentScene(world);
+    for (const d of scene.diffs.slice(0, 3)) {
+      world.found.add(d.id);
+      world.foundNames.push(d.name);
+      world.totalFound += 1;
+    }
+    world.streak = 3;
+    world.bestStreak = 3;
+    world.score = 325;
+    world.timeLeft = 68;
+    return true;
+  }
+
   if (shot === 'clear') {
     startScene(world, 0);
     const scene = currentScene(world);
@@ -86,7 +116,7 @@ export function applyShot(world, params) {
 // The four shots, in the order they are taken, for the screenshot script.
 export const SHOT_LIST = [
   { name: '1-cover', shot: 'cover', note: 'Scene 2, 3 found, 5 to go, 1:14 left' },
-  { name: '2-scene4', shot: 'scene4', note: 'Scene 4, 3 found, 5 to go' },
-  { name: '3-scene3', shot: 'scene3', note: 'Scene 3, 2 found, 6 to go' },
+  { name: '2-scene6', shot: 'scene6', note: 'Scene 6, 3 found, 5 to go' },
+  { name: '3-scene5', shot: 'scene5', note: 'Scene 5, 2 found, 6 to go' },
   { name: '4-clear', shot: 'clear', note: 'Scene 1, all 8 found, clear banner' },
 ];
