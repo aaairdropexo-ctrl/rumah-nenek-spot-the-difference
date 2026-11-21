@@ -717,10 +717,308 @@ const PORCH_DIFFS = [
   { id: 'ekor', name: 'Ekor kucing berbalik', type: 'flipped', x: 300, y: 498, r: 26 },
 ];
 
+// --- Scene 5: Kamar Tidur (Bedroom) ----------------------------------------
+// The late-game ramp: the differences here are smaller and quieter than
+// the first scenes — one slipper among two, one pillow among two.
+function drawBedroom(ctx, v, W, H) {
+  // Wall + floor.
+  ctx.fillStyle = '#efe6d8';
+  ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = '#c89b6a';
+  ctx.fillRect(0, 470, W, H - 470);
+  ctx.fillStyle = '#b3854f';
+  for (let x = 0; x < W; x += 90) ctx.fillRect(x, 470, 3, H - 470);
+
+  // Night window with moon, stars and curtains (same in both variants,
+  // except the curtain tie, which is a registered difference below).
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(400, 28, 140, 130);
+  ctx.fillStyle = '#2b3a5c';
+  ctx.fillRect(410, 38, 120, 110);
+  ctx.fillStyle = '#fff3c4';
+  circle(ctx, 500, 70, 18);
+  ctx.fillStyle = '#ffffff';
+  circle(ctx, 430, 60, 3);
+  circle(ctx, 455, 90, 3);
+  circle(ctx, 480, 55, 3);
+  circle(ctx, 515, 100, 3);
+  ctx.fillStyle = '#c0392b';
+  ctx.beginPath();
+  ctx.moveTo(400, 28);
+  ctx.lineTo(424, 28);
+  ctx.lineTo(416, 158);
+  ctx.lineTo(400, 158);
+  ctx.closePath();
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(540, 28);
+  ctx.lineTo(516, 28);
+  ctx.lineTo(524, 158);
+  ctx.lineTo(540, 158);
+  ctx.closePath();
+  ctx.fill();
+  // Curtain tie. A: knotted on the left panel. B: on the right (flipped).
+  ctx.fillStyle = '#ffd94d';
+  if (v === 'A') circle(ctx, 412, 92, 7);
+  else circle(ctx, 528, 92, 7);
+
+  // Wall painting. A: 120 x 80. B: 90 x 60 (resized).
+  ctx.fillStyle = '#6d4c2f';
+  if (v === 'A') ctx.fillRect(56, 36, 128, 88);
+  else ctx.fillRect(71, 46, 98, 68);
+  ctx.fillStyle = '#81b29a';
+  if (v === 'A') ctx.fillRect(62, 42, 116, 76);
+  else ctx.fillRect(77, 52, 86, 56);
+  ctx.fillStyle = '#e07a5f';
+  circle(ctx, v === 'A' ? 120 : 120, v === 'A' ? 80 : 80, 16);
+
+  // Wardrobe, right side, below the window.
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(470, 200, 90, 270);
+  ctx.fillStyle = '#a8763e';
+  ctx.fillRect(478, 208, 74, 254);
+  ctx.fillStyle = '#6d4c2f';
+  ctx.fillRect(512, 208, 4, 254);
+  ctx.fillStyle = '#ffd94d';
+  circle(ctx, 506, 340, 5);
+  circle(ctx, 522, 340, 5);
+
+  // Bed: headboard, mattress, blanket, pillows.
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(40, 250, 300, 18);
+  ctx.fillRect(40, 250, 14, 120);
+  ctx.fillStyle = '#fff8e6';
+  rr(ctx, 54, 300, 286, 70, 10);
+  // Pillows. A: two. B: the right one is gone (removed).
+  ctx.fillStyle = '#ffffff';
+  rr(ctx, 66, 306, 56, 34, 10);
+  if (v === 'A') rr(ctx, 134, 306, 56, 34, 10);
+  ctx.strokeStyle = '#d9d2c0';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(66, 306, 56, 34);
+  if (v === 'A') ctx.strokeRect(134, 306, 56, 34);
+  // Blanket over the lower half. Stripes: A blue, B green (recoloured).
+  ctx.fillStyle = '#f2cc8f';
+  rr(ctx, 54, 360, 286, 110, 10);
+  ctx.fillStyle = v === 'A' ? '#3d6fb4' : '#3fae6a';
+  ctx.fillRect(54, 392, 286, 12);
+  ctx.fillRect(54, 428, 286, 12);
+  // Teddy bear, only in B (added).
+  if (v === 'B') {
+    ctx.fillStyle = '#b5654a';
+    circle(ctx, 250, 340, 14);
+    circle(ctx, 250, 322, 10);
+    circle(ctx, 240, 314, 5);
+    circle(ctx, 260, 314, 5);
+    ctx.fillStyle = '#2b2620';
+    circle(ctx, 246, 320, 2);
+    circle(ctx, 254, 320, 2);
+  }
+
+  // Bedside table with a lit lamp (static) and an alarm clock.
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(360, 400, 100, 70);
+  ctx.fillStyle = '#6d4c2f';
+  ctx.fillRect(368, 408, 84, 8);
+  ctx.fillStyle = '#2f2f38';
+  ctx.fillRect(396, 340, 8, 60);
+  ctx.fillStyle = '#ffd94d';
+  ctx.beginPath();
+  ctx.moveTo(382, 340);
+  ctx.lineTo(418, 340);
+  ctx.lineTo(410, 310);
+  ctx.lineTo(390, 310);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = 'rgba(255, 217, 77, 0.3)';
+  circle(ctx, 400, 330, 26);
+  // Alarm clock. A: 7:00. B: 7:30 (moved).
+  ctx.fillStyle = '#fff8e6';
+  circle(ctx, 440, 388, 16);
+  ctx.strokeStyle = '#2b2620';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(440, 388, 16, 0, Math.PI * 2);
+  ctx.stroke();
+  line(ctx, 440, 388, 440, 376, 2, '#2b2620');
+  if (v === 'A') line(ctx, 440, 388, 450, 388, 2, '#2b2620');
+  else line(ctx, 440, 388, 440, 400, 2, '#2b2620');
+  // Book. A: on the bed. B: on the table, clear of the clock (moved).
+  const book = v === 'A' ? { x: 280, y: 340 } : { x: 376, y: 388 };
+  ctx.fillStyle = '#e05d4d';
+  rr(ctx, book.x - 16, book.y - 10, 32, 20, 3);
+  ctx.fillStyle = '#f7ead2';
+  ctx.fillRect(book.x - 12, book.y - 6, 24, 3);
+
+  // Rug + slippers. A: a pair. B: the right slipper is gone (removed).
+  ctx.fillStyle = '#f2cc8f';
+  rr(ctx, 180, 500, 220, 40, 10);
+  ctx.fillStyle = '#e05d4d';
+  ctx.fillRect(180, 512, 220, 12);
+  ctx.fillStyle = '#3d6fb4';
+  rr(ctx, 140, 484, 34, 16, 8);
+  if (v === 'A') rr(ctx, 184, 484, 34, 16, 8);
+}
+
+const BEDROOM_DIFFS = [
+  { id: 'bantal-tidur', name: 'Satu bantal hilang', type: 'removed', x: 162, y: 323, r: 22 },
+  { id: 'selimut', name: 'Warna garis selimut berubah', type: 'recoloured', x: 200, y: 398, r: 40 },
+  { id: 'jam-wekker', name: 'Jarum jam wekker pindah', type: 'moved', x: 440, y: 388, r: 20 },
+  { id: 'buku-tidur', name: 'Buku pindah ke meja', type: 'moved', x: 376, y: 388, r: 20, ax: 280, ay: 340 },
+  { id: 'gorden', name: 'Ikatan gorden pindah sisi', type: 'flipped', x: 528, y: 92, r: 16, ax: 412, ay: 92 },
+  { id: 'lukisan-tidur', name: 'Lukisan mengecil', type: 'resized', x: 120, y: 80, r: 30 },
+  { id: 'sandal', name: 'Satu sandal hilang', type: 'removed', x: 201, y: 492, r: 16 },
+  { id: 'boneka', name: 'Boneka muncul', type: 'added', x: 250, y: 332, r: 22 },
+];
+
+// --- Scene 6: Ruang Makan (Dining Room) --------------------------------------
+// The hardest scene: four plates, three bulbs, four chairs — the changes
+// hide among lookalikes, so the eye has to count, not just glance.
+function drawDining(ctx, v, W, H) {
+  // Wall + floor.
+  ctx.fillStyle = '#f3e2c7';
+  ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = '#c89b6a';
+  ctx.fillRect(0, 470, W, H - 470);
+  ctx.fillStyle = '#b3854f';
+  for (let x = 0; x < W; x += 90) ctx.fillRect(x, 470, 3, H - 470);
+
+  // Window with daylight (static).
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(40, 28, 140, 130);
+  ctx.fillStyle = '#bfe3f2';
+  ctx.fillRect(50, 38, 120, 110);
+  ctx.fillStyle = '#ffd94d';
+  circle(ctx, 140, 70, 20);
+  ctx.fillStyle = '#ffffff';
+  circle(ctx, 80, 90, 11);
+  circle(ctx, 94, 90, 14);
+
+  // Wall picture. A: 110 x 80. B: 80 x 60 (resized).
+  ctx.fillStyle = '#6d4c2f';
+  if (v === 'A') ctx.fillRect(426, 56, 118, 88);
+  else ctx.fillRect(441, 66, 88, 68);
+  ctx.fillStyle = '#f4a259';
+  if (v === 'A') ctx.fillRect(432, 62, 106, 76);
+  else ctx.fillRect(447, 72, 76, 56);
+  ctx.fillStyle = '#3fae6a';
+  circle(ctx, 485, 100, 14);
+
+  // Chandelier: three bulbs. B: the middle one is dark (removed).
+  ctx.fillStyle = '#2b2620';
+  ctx.fillRect(287, 0, 6, 40);
+  ctx.strokeStyle = '#2b2620';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(240, 44);
+  ctx.lineTo(340, 44);
+  ctx.stroke();
+  const bulbs = [260, 290, 320];
+  for (let i = 0; i < bulbs.length; i++) {
+    ctx.fillStyle = i === 1 && v === 'B' ? '#8a8578' : '#ffd94d';
+    circle(ctx, bulbs[i], 56, 10);
+  }
+  if (v === 'A') {
+    ctx.fillStyle = 'rgba(255, 217, 77, 0.25)';
+    circle(ctx, 290, 56, 40);
+  }
+
+  // Sideboard, left, with a bowl only in B (added).
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(40, 400, 100, 70);
+  ctx.fillStyle = '#6d4c2f';
+  ctx.fillRect(48, 408, 84, 8);
+  if (v === 'B') {
+    ctx.fillStyle = '#81b29a';
+    ctx.beginPath();
+    ctx.moveTo(70, 396);
+    ctx.lineTo(110, 396);
+    ctx.lineTo(104, 410);
+    ctx.lineTo(76, 410);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // Table with a tablecloth. A: red checks. B: plain cream (recoloured).
+  ctx.fillStyle = '#8a5a2e';
+  ctx.fillRect(120, 380, 340, 14);
+  ctx.fillRect(140, 394, 14, 76);
+  ctx.fillRect(426, 394, 14, 76);
+  if (v === 'A') {
+    ctx.fillStyle = '#f7ead2';
+    ctx.fillRect(120, 360, 340, 20);
+    ctx.fillStyle = '#e05d4d';
+    for (let x = 120; x < 460; x += 40) ctx.fillRect(x, 360, 20, 20);
+  } else {
+    ctx.fillStyle = '#f7ead2';
+    ctx.fillRect(120, 360, 340, 20);
+    ctx.fillStyle = '#e05d4d';
+    ctx.fillRect(120, 374, 340, 6);
+  }
+
+  // Four plates. B: the third one is gone (removed).
+  ctx.fillStyle = '#ffffff';
+  const plates = [180, 260, 340, 420];
+  for (let i = 0; i < plates.length; i++) {
+    if (v === 'B' && i === 2) continue;
+    circle(ctx, plates[i], 352, 16);
+    ctx.strokeStyle = '#d9d2c0';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(plates[i], 352, 10, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  // Fork. A: left of plate one. B: right of it (flipped).
+  ctx.fillStyle = '#c0c0cc';
+  const forkX = v === 'A' ? 156 : 204;
+  ctx.fillRect(forkX, 342, 4, 20);
+  circle(ctx, forkX + 2, 340, 5);
+
+  // Vase with flowers, table centre. A: red. B: yellow (recoloured).
+  ctx.fillStyle = '#3d6fb4';
+  rr(ctx, 278, 330, 24, 30, 6);
+  ctx.fillStyle = v === 'A' ? '#e05d4d' : '#ffd94d';
+  for (let p = 0; p < 5; p++) {
+    const a = (p / 5) * Math.PI * 2;
+    circle(ctx, 290 + Math.cos(a) * 10, 318 + Math.sin(a) * 10, 6);
+  }
+  ctx.fillStyle = '#e07a5f';
+  circle(ctx, 290, 318, 5);
+
+  // Chairs: left, right, and two in front. The right chair slides out
+  // in B (moved) — it ends up clear of the table.
+  ctx.fillStyle = '#6d4c2f';
+  const chairs = [
+    { x: 150, y: 410 },
+    { x: 210, y: 478 },
+    { x: 330, y: 478 },
+  ];
+  const rightChair = v === 'A' ? { x: 450, y: 410 } : { x: 508, y: 440 };
+  for (const c of [...chairs, rightChair]) {
+    ctx.fillRect(c.x, c.y, 50, 10);
+    ctx.fillRect(c.x + 4, c.y + 10, 8, 40);
+    ctx.fillRect(c.x + 38, c.y + 10, 8, 40);
+    ctx.fillRect(c.x, c.y - 36, 10, 40);
+  }
+}
+
+const DINING_DIFFS = [
+  { id: 'piring', name: 'Satu piring hilang', type: 'removed', x: 340, y: 352, r: 18 },
+  { id: 'vas-makan', name: 'Warna bunga vas berubah', type: 'recoloured', x: 290, y: 318, r: 22 },
+  { id: 'bohlam', name: 'Satu bohlam padam', type: 'removed', x: 290, y: 56, r: 16 },
+  { id: 'kursi-makan', name: 'Kursi geser keluar', type: 'moved', x: 508, y: 440, r: 28, ax: 450, ay: 410 },
+  { id: 'taplak', name: 'Motif taplak berubah', type: 'recoloured', x: 290, y: 370, r: 40 },
+  { id: 'garpu', name: 'Garpu pindah sisi piring', type: 'flipped', x: 204, y: 352, r: 14, ax: 156, ay: 352 },
+  { id: 'lukisan-makan', name: 'Lukisan mengecil', type: 'resized', x: 485, y: 100, r: 28 },
+  { id: 'mangkuk', name: 'Mangkuk muncul', type: 'added', x: 90, y: 402, r: 18 },
+];
+
 // --- The set ----------------------------------------------------------------
 export const SCENES = [
   { id: 1, name: 'Dapur', sub: 'Dapur nenek yang hangat', draw: drawKitchen, diffs: KITCHEN_DIFFS },
   { id: 2, name: 'Ruang Tamu', sub: 'Sore di ruang tamu', draw: drawLiving, diffs: LIVING_DIFFS },
   { id: 3, name: 'Kebun', sub: 'Kebun belakang rumah', draw: drawGarden, diffs: GARDEN_DIFFS },
   { id: 4, name: 'Beranda Senja', sub: 'Senja di beranda', draw: drawPorch, diffs: PORCH_DIFFS },
+  { id: 5, name: 'Kamar Tidur', sub: 'Malam di kamar tidur', draw: drawBedroom, diffs: BEDROOM_DIFFS },
+  { id: 6, name: 'Ruang Makan', sub: 'Makan malam keluarga', draw: drawDining, diffs: DINING_DIFFS },
 ];
